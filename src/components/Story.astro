@@ -1,0 +1,62 @@
+---
+interface Props { image: string; image2: string }
+const { image, image2 } = Astro.props;
+---
+
+<section id="story" class="relative overflow-hidden py-24 sm:py-32" aria-labelledby="story-title">
+  <div aria-hidden="true" class="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,rgba(255,90,31,.14),transparent_55%)]"></div>
+
+  <div class="mx-auto grid max-w-7xl items-center gap-14 px-5 sm:px-8 lg:grid-cols-2">
+    <div class="relative order-2 lg:order-1">
+      <div class="grid grid-cols-5 gap-4">
+        <figure class="reveal-clip col-span-3 aspect-[3/4] overflow-hidden rounded-[1.75rem] border border-white/10 bg-coal-800">
+          <img src={image} alt="Warm lighting and interior design at Grand BBQ" loading="lazy" referrerpolicy="no-referrer" class="parallax h-full w-full object-cover" />
+        </figure>
+        <figure class="reveal-clip col-span-2 mt-16 aspect-[3/4] overflow-hidden rounded-[1.75rem] border border-white/10 bg-coal-800" style="--d:200ms">
+          <img src={image2} alt="Dining atmosphere at Grand BBQ" loading="lazy" referrerpolicy="no-referrer" class="parallax h-full w-full object-cover" />
+        </figure>
+      </div>
+      <div class="reveal glass absolute -bottom-6 left-6 right-6 rounded-2xl p-5 sm:left-auto sm:right-10 sm:w-72" style="--d:400ms">
+        <p class="text-[11px] font-semibold uppercase tracking-eyebrow text-flame-300">Hand-crafted</p>
+        <p class="mt-1 text-sm text-ash-200">Every dish made exclusively by Iraqi hands — <span class="font-arabic" lang="ar" dir="rtl">بايادي عراقية حصراً</span></p>
+      </div>
+    </div>
+
+    <div class="order-1 lg:order-2">
+      <p class="reveal text-xs font-semibold uppercase tracking-eyebrow text-flame-400">— By Chef Murad</p>
+      <h2 id="story-title" class="reveal mt-4 font-display text-[clamp(2.6rem,6vw,5rem)] uppercase leading-[0.9]" style="--d:100ms">
+        The experience starts <span class="text-fire">before</span> the first bite.
+      </h2>
+
+      <blockquote class="reveal mt-8 border-r-2 border-ember-500 pr-5 text-right" style="--d:200ms">
+        <p class="font-arabic text-2xl leading-relaxed text-ash-100" lang="ar" dir="rtl">
+          لأن التجربة ما تبدأ مع أول لقمة… تبدأ من أول خطوة تدخل بيها
+        </p>
+      </blockquote>
+
+      <p class="reveal mt-6 text-lg leading-relaxed text-ash-300" style="--d:300ms">
+        “A place you relax in — and come back to, not once, but every time.” From the lighting to the décor, every
+        detail at Grand BBQ is designed so each visit has its own character. Chef Murad pairs that atmosphere with a
+        menu that bridges Basra’s love of the grill with American-style smokehouse craft and Italian comfort.
+      </p>
+
+      <ul class="reveal mt-10 grid gap-4 sm:grid-cols-3" style="--d:400ms">
+        <li class="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+          <span class="text-2xl" aria-hidden="true">🔥</span>
+          <p class="mt-2 font-semibold">Real smoke</p>
+          <p class="text-sm text-ash-400">Slow, patient cooking</p>
+        </li>
+        <li class="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+          <span class="text-2xl" aria-hidden="true">🕯️</span>
+          <p class="mt-2 font-semibold">Crafted space</p>
+          <p class="text-sm text-ash-400">Lighting &amp; décor</p>
+        </li>
+        <li class="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+          <span class="text-2xl" aria-hidden="true">👨‍👩‍👧</span>
+          <p class="mt-2 font-semibold">For everyone</p>
+          <p class="text-sm text-ash-400">Friends &amp; family</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>

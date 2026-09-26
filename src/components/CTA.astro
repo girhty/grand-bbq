@@ -1,0 +1,35 @@
+---
+interface Props { tel: string; phone: string }
+const { tel, phone } = Astro.props;
+---
+
+<section class="relative px-5 py-20 sm:px-8" aria-labelledby="cta-title">
+  <div class="reveal-scale relative mx-auto max-w-7xl overflow-hidden rounded-[2.5rem] border border-ember-500/30 bg-coal-800 px-6 py-20 text-center sm:px-12 sm:py-28">
+    <div aria-hidden="true" class="absolute inset-0 -z-0">
+      <div class="absolute left-1/2 top-full h-[40rem] w-[60rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-t from-ember-600 via-ember-500/60 to-flame-400/10 blur-[100px] animate-flicker"></div>
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_40%,rgba(13,11,9,.7))]"></div>
+    </div>
+
+    <div class="relative">
+      <p class="inline-flex items-center gap-2 rounded-full border border-flame-400/30 bg-coal-950/40 px-4 py-1.5 text-xs font-bold uppercase tracking-eyebrow text-flame-300">
+        <span class="h-2 w-2 animate-pulse rounded-full bg-ember-500"></span> Smoked in limited batches
+      </p>
+      <h2 id="cta-title" class="mx-auto mt-6 max-w-4xl font-display text-[clamp(3rem,8vw,7rem)] uppercase leading-[0.88]">
+        The smoker’s lit. <span class="text-fire">Your table’s waiting.</span>
+      </h2>
+      <p class="mx-auto mt-6 max-w-xl text-lg text-ash-200">
+        Today’s smoked cuts sell out — call ahead to reserve your table or place your order before the fire runs dry.
+      </p>
+      <p class="mt-2 font-arabic text-lg text-flame-300" lang="ar" dir="rtl">خلي ذكرياتك حلوة ويا كراند باربكيو</p>
+
+      <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a href={`tel:${tel}`} class="magnetic group inline-flex items-center gap-3 rounded-full bg-ash-100 px-9 py-5 text-lg font-extrabold text-coal-950 shadow-[0_0_60px_-10px_rgba(255,190,61,.9)] hover:bg-white">
+          📞 Call {phone}
+        </a>
+        <a href={`https://wa.me/${tel.replace('+', '')}`} target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-full border border-white/25 bg-coal-950/40 px-8 py-5 font-bold backdrop-blur transition hover:border-emerald-400/60">
+          WhatsApp us
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

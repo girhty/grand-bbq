@@ -1,0 +1,103 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Marquee from '../components/Marquee.astro';
+import Signatures from '../components/Signatures.astro';
+import Story from '../components/Story.astro';
+import Reviews from '../components/Reviews.astro';
+import InstagramFeed from '../components/InstagramFeed.astro';
+import Locations from '../components/Locations.astro';
+import FAQ from '../components/FAQ.astro';
+import CTA from '../components/CTA.astro';
+import Footer from '../components/Footer.astro';
+
+const clean = (s: string) =>
+  s
+    .replace(/[\u2066-\u2069\u202A-\u202E\u200E\u200F\t]/g, '')
+    .replace(/[ ]{2,}/g, ' ')
+    .trim();
+
+const ig = {
+  username: 'grand.bbq',
+  name: 'كراند باربكيو',
+  followers: 84283,
+  profilePic:
+    'https://scontent-ams2-1.cdninstagram.com/v/t51.82787-19/616020340_18093095042510735_846543229222985854_n.jpg?stp=dst-jpg_s150x150_tt6&_nc_cat=107&ccb=7-5&_nc_sid=f7ccc5&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy4xMDgwLkMzIn0%3D&_nc_ohc=bVsYRewnqa0Q7kNvwFmfm5K&_nc_oc=Adr_3c_pw67j2VwJUZ5vaSREtTWn3WJZ9g6YD54a1AVRw51Am1fcNiiUomGA_jbp8QY&_nc_zt=24&_nc_ht=scontent-ams2-1.cdninstagram.com&_nc_gid=huJTYfOLB8tMPKIm5yAVUQ&_nc_ss=7ba8c&oh=00_AQKLs5JswuRmkJ5jsUPqCXvsLMabJ7kgpL4xzXe_OM3adQ&oe=6ABCDC75',
+  url: 'https://www.instagram.com/grand.bbq/',
+};
+
+const rawPosts = [
+  { caption: '⁨\t❣️❣️\n#اكسبلور_فولو #اكسبلور #اكسبلور #مطعم #البصره⁩', image_url: 'https://scontent-ams2-1.cdninstagram.com/v/t51.82787-15/780255527_18071830142740582_8065915801178903251_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=100&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0xJUFMuYmVzdF9pbWFnZV91cmxnZW4uQzMifQ%3D%3D&_nc_ohc=mxJiTjeBgHcQ7kNvwFgcTQN&_nc_oc=AdqU1q-ypNlQ4iY8NdmmeotmAqD546uZbeOsKW6FrPbG4FG4-zids-G1ZVdbsIu4ouY&_nc_zt=23&_nc_ht=scontent-ams2-1.cdninstagram.com&_nc_gid=e8_GxITcSVaI0vTMoauXMw&_nc_ss=7ba8c&oh=00_AQIUr8perLDALcJmecHz3yKVosN4uYcXtDeOPquF78HlSA&oe=6ABCE1B6', likes: 0 },
+  { caption: '⁨\t⁨\tالاماكن تصنع الذكريات خلي ذكرياتك حلوة ويا ‪@grand.bbq‬ ⁩⁩', image_url: 'https://scontent-ams2-1.cdninstagram.com/v/t51.82787-15/776163930_18615154036053866_5423531347363291242_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=110&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0xJUFMuYmVzdF9pbWFnZV91cmxnZW4uQzMifQ%3D%3D&_nc_ohc=_BkbkQy0zLQQ7kNvwHi6A1v&_nc_oc=AdoY8iWc5biiPeuqU9Sol86GEWn7IqkNxpcJjskQx_iFmrAN4NFf9sol_2BP8o1kuns&_nc_zt=23&_nc_ht=scontent-ams2-1.cdninstagram.com&_nc_gid=e8_GxITcSVaI0vTMoauXMw&_nc_ss=7ba8c&oh=00_AQLFSUUIHdMa8T_Xbv25ENgCTJbjUSyN5AWck7vlLISeEw&oe=6ABCE9D5', likes: 0 },
+  { caption: '⁨\t‪@grand.bbq‬ \nمن المطاعم اللي تدخلها على تجربة وتطلع وأنت تكول: لازم أرجع مرة ثانية! 😍👌 الأكل كان لذيذ وكلشي بيه يستاهل المدح ❤', image_url: 'https://scontent-ams2-1.cdninstagram.com/v/t51.82787-15/769907341_18388032961165963_2212789076875701400_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=111&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=c2843Ez3890Q7kNvwG2XtH4&_nc_oc=AdqQJ9TYQEQ2Rbcmpd5PfA-33HCYaCwc42_KcL1lyulmnnV-qi-MKKIQ1gm19DV3dCU&_nc_zt=23&_nc_ht=scontent-ams2-1.cdninstagram.com&_nc_gid=e8_GxITcSVaI0vTMoauXMw&_nc_ss=7ba8c&oh=00_AQIy2SDH-zkVHCFGyc_OEdDxV9mETmdH-2JE6EBZ54D9DA&oe=6ABCDF23', likes: 0 },
+  { caption: 'مطعم گراند باربكيو😍 كانت تجربه تستحق صراحه اتمنى تزورونه وتتذقون الاطباق الي تجنن وبايادي عراقيه حصرا اطباق متنوعه من المطبخ الايطالي شي مرتب روحو ومراح تندمون اكيد😍✨', image_url: 'https://scontent-ams2-1.cdninstagram.com/v/t51.82787-15/771540929_18388031713165963_1942277232126988550_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=100&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0xJUFMuYmVzdF9pbWFnZV91cmxnZW4uQzMifQ%3D%3D&_nc_ohc=xRmdEmrU8NUQ7kNvwFoNcNq&_nc_oc=AdrzGmHTFM_h7AUnQSgPvoBSXnmmsaleStUrF876d0sbypmefHYB0zgBsH8Jbgyhg9Y&_nc_zt=23&_nc_ht=scontent-ams2-1.cdninstagram.com&_nc_gid=e8_GxITcSVaI0vTMoauXMw&_nc_ss=7ba8c&oh=00_AQI2xbZ79XdOal-TQZ-QkstSqvAG07o8s5oQbd1xEKCxxg&oe=6ABCF242', likes: 0 },
+  { caption: '#البصرة #تايم_سكوير #مطاعم_البصرة', image_url: 'https://scontent-ams2-1.cdninstagram.com/v/t51.71878-15/770669074_2326688001071502_9151636160871816189_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=102&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0xJUFMuYmVzdF9pbWFnZV91cmxnZW4uQzMifQ%3D%3D&_nc_ohc=b5sdAhcCUlUQ7kNvwHKk6vf&_nc_oc=Adqr5KCN2ITmMqbrWCo4DVbQzX-_z4pLNOGSoiNdEeR7gLYGXupMQRYOSi6fY6bseFQ&_nc_zt=23&_nc_ht=scontent-ams2-1.cdninstagram.com&_nc_gid=e8_GxITcSVaI0vTMoauXMw&_nc_ss=7ba8c&oh=00_AQK1exwneFyn4xOiQrpVqqnmjjzJb8DewFeq5GwXgch2uA&oe=6ABCF077', likes: 0 },
+  { caption: 'كراند باربكيو  اطيب لحم مدخن جربته 🥩🔥 #مطاعم_البصرة #البصرة', image_url: 'https://scontent-ams2-1.cdninstagram.com/v/t51.82787-15/818261372_18372520090240683_1605931670920474644_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=102&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0xJUFMuYmVzdF9pbWFnZV91cmxnZW4uQzMifQ%3D%3D&_nc_ohc=QCKVtitrIW4Q7kNvwFch1xX&_nc_oc=Adp2dC_MhBwjAYlcq_K3D2TB3Hp_UK1WHc2psWskef0MPBim9FDrX3M8NIy7mkYb46k&_nc_zt=23&_nc_ht=scontent-ams2-1.cdninstagram.com&_nc_gid=e8_GxITcSVaI0vTMoauXMw&_nc_ss=7ba8c&oh=00_AQLSMJBkSnk17E2G5m739U7m7sYhTSExLV2j4kfjkPsWyg&oe=6ABCE355', likes: 0 },
+  { caption: 'مو مجرد بركر… تجربة شواء تستحق تنعاد', image_url: 'https://scontent-ams2-1.cdninstagram.com/v/t51.71878-15/763276565_1409423897919423_1757205629793335654_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=101&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0xJUFMuYmVzdF9pbWFnZV91cmxnZW4uQzMifQ%3D%3D&_nc_ohc=C-BB7Yxols8Q7kNvwGY8jQ4&_nc_oc=AdpNZrBB82av4qDZj_7bowIxaluAfT5sioN7dJb7fyN8HhzA1C87xd8S6UuFGPJXAjM&_nc_zt=23&_nc_ht=scontent-ams2-1.cdninstagram.com&_nc_gid=e8_GxITcSVaI0vTMoauXMw&_nc_ss=7ba8c&oh=00_AQJxfx0yC7uBylkcOsGkf4dsrWbVQDFbIiLotzJt-6wK3A&oe=6ABCD27C', likes: 0 },
+  { caption: 'المكان يحچي… والطعم يكمل الحكاية.', image_url: 'https://scontent-ams2-1.cdninstagram.com/v/t51.71878-15/759904176_1060002459921274_5618671143116256740_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=101&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0xJUFMuYmVzdF9pbWFnZV91cmxnZW4uQzMifQ%3D%3D&_nc_ohc=lcnSXVj_kF4Q7kNvwFfk2CG&_nc_oc=AdpL7Sn_2jDYvYQwRyBnv8LkSFTxA2SwEbaEy29oP_3fgjvDVsfbNNiXWHB0tn8i3JQ&_nc_zt=23&_nc_ht=scontent-ams2-1.cdninstagram.com&_nc_gid=e8_GxITcSVaI0vTMoauXMw&_nc_ss=7ba8c&oh=00_AQLvy6LROETiwKrnAnaKVFJgzG4ZHp0GvEsDo2tiK41LSQ&oe=6ABCDE2F', likes: 0 },
+  { caption: '📍اليوم اني يم @grand.bbq  حرفياً اطيب مطعم بل بصرة', image_url: 'https://scontent-ams2-1.cdninstagram.com/v/t51.82787-15/755246611_18371899252231545_6305158313991731274_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=102&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0xJUFMuYmVzdF9pbWFnZV91cmxnZW4uQzMifQ%3D%3D&_nc_ohc=wcXROq6bvBsQ7kNvwHGrovh&_nc_oc=Adp3-jaTSsYnvX-SOZoxzy6HAwZeEydSEH18hBmbvvCRb9QhkOkFgM7cNcoRjxieGkY&_nc_zt=23&_nc_ht=scontent-ams2-1.cdninstagram.com&_nc_gid=e8_GxITcSVaI0vTMoauXMw&_nc_ss=7ba8c&oh=00_AQIgODcasOK9fAT6EGU0EuRG1bD-pWGi0LkuwdYxGaav1Q&oe=6ABCF426', likes: 0 },
+  { caption: 'المكان اللي ترتاح بيه… وترجعله مو مرة، كل مرة. اهتمينا بكل تفصيلة، من الإضاءة إلى الديكور، حتى تكون كل زيارة إلها طابعها الخاص.', image_url: 'https://scontent-ams2-1.cdninstagram.com/v/t51.71878-15/753224929_1506815724036189_6748687473429772854_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=101&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0xJUFMuYmVzdF9pbWFnZV91cmxnZW4uQzMifQ%3D%3D&_nc_ohc=sHATKTCjl5wQ7kNvwGcjN2p&_nc_oc=Ado0W5oVBq-fBqHePLA2eWqz90DDtcS8uMd5nTFGLdc3sAXJ9u7cGCjWISc7TUc_wMg&_nc_zt=23&_nc_ht=scontent-ams2-1.cdninstagram.com&_nc_gid=e8_GxITcSVaI0vTMoauXMw&_nc_ss=7ba8c&oh=00_AQLdhaOpa_Kx5SVX60UABhdHp1bHJSWgs-ZM3Sue6SkIKQ&oe=6ABCE629', likes: 0 },
+];
+
+const posts = rawPosts.map((p) => ({ ...p, caption: clean(p.caption) }));
+
+const place = {
+  name: 'Grand BBQ',
+  rating: 3.9,
+  total: 3,
+  address: 'GR7G+2WQ, Basrah, Basra Governorate',
+  phone: '0772 511 1190',
+  openNow: true,
+  heroImage:
+    'https://lh3.googleusercontent.com/grass-cs/ACvplmP6Wp0wC27KL0EIEIpzA4zHrsfd0dd81esZQfDQRgGIQ2sg9IGdJ3hegU0RmiqWcSH3hhY3_wSdRlEA6LODijBxfeAT0Lh2BrEsDfoHX7xhSoc0rSMscLjPPWe9mX6haPtNcL56aw=w408-h544-k-no',
+};
+
+const branches = [
+  {
+    name: 'Al-Sa\'i Branch',
+    nameAr: 'فرع الساعي',
+    area: 'Al-Tuwaisa · Al-Sa\'i District, Basra',
+    plus: 'GR7G+2WQ',
+    phone: '0772 511 1190',
+    tel: '+9647725111190',
+    flagship: true,
+  },
+  {
+    name: 'Madinat Al-Amal Branch',
+    nameAr: 'فرع مدينة الآمال',
+    area: 'Madinat Al-Amal, Basra',
+    plus: null,
+    phone: '0771 351 3571',
+    tel: '+9647713513571',
+    flagship: false,
+  },
+];
+---
+
+<Layout
+  title="Grand BBQ — Basra's Smokehouse & Burger Bar by Chef Murad | كراند باربكيو"
+  description="Grand BBQ (كراند باربكيو) — low-and-slow smoked meats, charcoal-kissed burgers and Italian plates by Chef Murad. Two branches in Basra: Al-Sa'i & Madinat Al-Amal. Call 0772 511 1190."
+  image={place.heroImage}
+>
+  <Header phone={branches[0].tel} />
+  <main id="main">
+    <Hero
+      image={place.heroImage}
+      rating={place.rating}
+      total={place.total}
+      followers={ig.followers}
+      openNow={place.openNow}
+      tel={branches[0].tel}
+    />
+    <Marquee />
+    <Signatures images={[posts[5].image_url, posts[6].image_url, posts[3].image_url, posts[0].image_url]} />
+    <Story image={posts[9].image_url} image2={posts[7].image_url} />
+    <Reviews rating={place.rating} total={place.total} followers={ig.followers} />
+    <InstagramFeed posts={posts} profile={ig} />
+    <Locations branches={branches} address={place.address} openNow={place.openNow} />
+    <FAQ />
+    <CTA tel={branches[0].tel} phone={branches[0].phone} />
+  </main>
+  <Footer branches={branches} igUrl={ig.url} />
+</Layout>

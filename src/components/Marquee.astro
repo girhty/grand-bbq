@@ -1,0 +1,17 @@
+---
+const words = ['Smoked Brisket', 'كراند باربكيو', 'Smash Burgers', 'Charcoal Grill', 'BY CHEF MURAD', 'البصرة', 'Italian Plates', 'Best BBQ in Town'];
+const loop = [...words, ...words];
+---
+
+<section aria-label="What we're known for" class="relative -rotate-1 border-y border-ember-500/30 bg-ember-500 py-4 text-coal-950">
+  <div class="flex overflow-hidden [mask-image:linear-gradient(90deg,transparent,black_8%,black_92%,transparent)]">
+    <ul class="flex shrink-0 animate-marquee items-center gap-10 whitespace-nowrap pr-10 hover:[animation-play-state:paused]">
+      {loop.map((w, i) => (
+        <li class="flex items-center gap-10 font-display text-3xl uppercase tracking-wide sm:text-4xl" aria-hidden={i >= words.length ? 'true' : undefined}>
+          <span class={/[\u0600-\u06FF]/.test(w) ? 'font-arabic font-extrabold' : ''}>{w}</span>
+          <span aria-hidden="true">✦</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

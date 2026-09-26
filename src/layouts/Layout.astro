@@ -1,0 +1,245 @@
+---
+import { ViewTransitions } from 'astro:transitions';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+}
+
+const { title, description, image } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://grand-bbq.example.com');
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Restaurant',
+  name: 'Grand BBQ',
+  alternateName: 'كراند باربكيو',
+  servesCuisine: ['Barbecue', 'Burgers', 'Italian'],
+  telephone: '+964 772 511 1190',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Al-Sa\'i, Al-Tuwaisa (GR7G+2WQ)',
+    addressLocality: 'Basrah',
+    addressRegion: 'Basra Governorate',
+    addressCountry: 'IQ',
+  },
+  aggregateRating: { '@type': 'AggregateRating', ratingValue: 3.9, reviewCount: 3 },
+  sameAs: ['https://www.instagram.com/grand.bbq/'],
+};
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#0d0b09" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <meta property="og:type" content="restaurant" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {image && <meta property="og:image" content={image} />}
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    <ViewTransitions />
+  </head>
+  <body class="bg-coal-900 font-sans text-ash-100 antialiased selection:bg-ember-500 selection:text-coal-950">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-ember-500 focus:px-5 focus:py-2 focus:font-semibold focus:text-coal-950"
+    >Skip to content</a>
+
+    <!-- scroll progress (CSS scroll-driven) -->
+    <div class="scroll-progress" aria-hidden="true"></div>
+    <!-- film grain -->
+    <div class="noise" aria-hidden="true"></div>
+
+    <slot />
+
+    <style is:global>
+      :root { color-scheme: dark; }
+      html { -webkit-tap-highlight-color: transparent; }
+      body { overflow-x: hidden; }
+
+      :focus-visible {
+        outline: 2px solid #ffbe3d;
+        outline-offset: 3px;
+        border-radius: 10px;
+      }
+
+      .noise {
+        pointer-events: none;
+        position: fixed;
+        inset: 0;
+        z-index: 60;
+        opacity: 0.07;
+        mix-blend-mode: overlay;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      }
+
+      .text-fire {
+        background: linear-gradient(100deg, #ffd27a 0%, #ffa70f 35%, #ff5a1f 70%, #e2410b 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .glass {
+        background: linear-gradient(145deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+        backdrop-filter: blur(16px) saturate(140%);
+        -webkit-backdrop-filter: blur(16px) saturate(140%);
+        border: 1px solid rgba(255,255,255,0.09);
+      }
+
+      .glow-border { position: relative; isolation: isolate; }
+      .glow-border::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        padding: 1px;
+        border-radius: inherit;
+        background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 0%), rgba(255,122,61,0.75), transparent 45%), linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.02));
+        -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        z-index: -1;
+        pointer-events: none;
+        transition: opacity .4s;
+      }
+
+      /* ---------- Reveal (IntersectionObserver) ---------- */
+      html.js .reveal {
+        opacity: 0;
+        transform: translate3d(0, 32px, 0);
+        transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1);
+        transition-delay: var(--d, 0ms);
+      }
+      html.js .reveal-scale {
+        opacity: 0;
+        transform: scale(.94);
+        transition: opacity 1s cubic-bezier(.2,.7,.2,1), transform 1s cubic-bezier(.2,.7,.2,1);
+        transition-delay: var(--d, 0ms);
+      }
+      html.js .reveal-clip {
+        clip-path: inset(0 0 100% 0);
+        transition: clip-path 1.1s cubic-bezier(.77,0,.18,1);
+        transition-delay: var(--d, 0ms);
+      }
+      html.js .is-in.reveal,
+      html.js .is-in.reveal-scale { opacity: 1; transform: none; }
+      html.js .is-in.reveal-clip { clip-path: inset(0 0 0 0); }
+
+      /* ---------- Native scroll-driven animations ---------- */
+      .scroll-progress {
+        position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 70;
+        transform-origin: 0 50%;
+        transform: scaleX(0);
+        background: linear-gradient(90deg, #ffbe3d, #ff5a1f);
+      }
+      @supports (animation-timeline: scroll()) {
+        .scroll-progress { animation: grow linear both; animation-timeline: scroll(root); }
+        .parallax { animation: parallax linear both; animation-timeline: view(); }
+        .scroll-fade { animation: scrollFade linear both; animation-timeline: view(); animation-range: exit 0% exit 100%; }
+      }
+      @keyframes grow { to { transform: scaleX(1); } }
+      @keyframes parallax { from { transform: translateY(-8%) scale(1.12); } to { transform: translateY(8%) scale(1.12); } }
+      @keyframes scrollFade { to { opacity: 0; transform: translateY(-60px) scale(.97); } }
+
+      /* ---------- Accordion ---------- */
+      .faq-item summary { list-style: none; }
+      .faq-item summary::-webkit-details-marker { display: none; }
+      .faq-item .faq-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .45s cubic-bezier(.2,.7,.2,1); }
+      .faq-item[open] .faq-body { grid-template-rows: 1fr; }
+      .faq-item .faq-icon { transition: transform .4s cubic-bezier(.2,.7,.2,1); }
+      .faq-item[open] .faq-icon { transform: rotate(45deg); }
+
+      /* ---------- Magnetic ---------- */
+      .magnetic { transition: transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s; will-change: transform; }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+        html.js .reveal, html.js .reveal-scale { opacity: 1; transform: none; }
+        html.js .reveal-clip { clip-path: none; }
+      }
+    </style>
+
+    <script>
+      function init() {
+        // Reveal on scroll
+        const els = document.querySelectorAll('.reveal, .reveal-scale, .reveal-clip');
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                e.target.classList.add('is-in');
+                io.unobserve(e.target);
+              }
+            });
+          },
+          { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+        );
+        els.forEach((el) => io.observe(el));
+
+        // Header state
+        const header = document.querySelector('[data-header]');
+        const onScroll = () => header?.toggleAttribute('data-scrolled', window.scrollY > 24);
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+
+        const fine = window.matchMedia('(pointer: fine)').matches;
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // Glow-follow cards
+        document.querySelectorAll<HTMLElement>('.glow-border').forEach((card) => {
+          card.addEventListener('pointermove', (ev) => {
+            const r = card.getBoundingClientRect();
+            card.style.setProperty('--mx', `${ev.clientX - r.left}px`);
+            card.style.setProperty('--my', `${ev.clientY - r.top}px`);
+          });
+        });
+
+        // Magnetic buttons
+        if (fine && !reduce) {
+          document.querySelectorAll<HTMLElement>('.magnetic').forEach((btn) => {
+            btn.addEventListener('pointermove', (ev) => {
+              const r = btn.getBoundingClientRect();
+              const x = (ev.clientX - r.left - r.width / 2) * 0.25;
+              const y = (ev.clientY - r.top - r.height / 2) * 0.35;
+              btn.style.transform = `translate(${x}px, ${y}px)`;
+            });
+            btn.addEventListener('pointerleave', () => (btn.style.transform = ''));
+          });
+        }
+
+        // Mobile menu
+        const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+        const menu = document.querySelector<HTMLElement>('[data-menu]');
+        if (toggle && menu) {
+          const set = (open: boolean) => {
+            toggle.setAttribute('aria-expanded', String(open));
+            menu.dataset.open = String(open);
+            document.body.style.overflow = open ? 'hidden' : '';
+          };
+          toggle.addEventListener('click', () => set(toggle.getAttribute('aria-expanded') !== 'true'));
+          menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => set(false)));
+          document.addEventListener('keydown', (e) => e.key === 'Escape' && set(false));
+        }
+      }
+      document.addEventListener('astro:page-load', init);
+    </script>
+  </body>
+</html>
